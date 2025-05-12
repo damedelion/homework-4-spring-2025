@@ -28,6 +28,18 @@ class CommercePage(BasePage):
     def find_required_field_error(self):
         return self.find(CommerceLocators.REQUIRED_FIELD_ERROR)
     
+    def find_required_http_protocol_error(self):
+        return self.find(CommerceLocators.REQUIRED_HTTP_PROTOCOL_ERROR)
+    
+    def find_invalid_url_error(self):
+        return self.find(CommerceLocators.INVALID_URL_ERROR)
+    
+    def find_invalid_file_format_error(self):
+        return self.find(CommerceLocators.INVALID_FILE_FORMAT_ERROR)
+
+    def find_unsupported_marketplace_url_error(self):
+        return self.find(CommerceLocators.UNSUPPORTED_MARKETPLACE_URL_ERROR)    
+
     def select_catalog_from_url(self):
         self.click(CommerceLocators.CATALOG_FROM_URL_SELECT)
     
@@ -58,5 +70,16 @@ class CommercePage(BasePage):
     def cancel_create_catalog_modal(self):
         self.click(CommerceLocators.CANCEL_CREATE_CATALOG_MODAL_BUTTON)
 
-        
+    def find_catalog_url_auth_button(self):
+        return self.find(CommerceLocators.CATALOG_URL_AUTH_BUTTON)
     
+    def search_for_catalog(self, query):
+        search_input = self.find(CommerceLocators.SEARCH_CATALOG_INPUT)
+        search_input.send_keys(query)
+        return search_input
+    
+    def find_search_results_table(self):
+        return self.find(CommerceLocators.SEARCH_RESULTS_TABLE)
+    
+    def find_search_not_found_message(self):
+        return self.find(CommerceLocators.SEARCH_NOT_FOUND_MESSAGE)

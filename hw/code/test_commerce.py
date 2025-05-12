@@ -42,6 +42,32 @@ class TestCommerce(BaseCase):
 
         assert commerce_page.find_required_field_error()
     
+    def test_required_http_protocol_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_url()
+        
+        catalog_url_input = commerce_page.find_catalog_from_url_input()
+        catalog_url_input.send_keys('abc')
+
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_required_http_protocol_error()
+    
+    def test_invalid_url_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_url()
+        
+        catalog_url_input = commerce_page.find_catalog_from_url_input()
+        catalog_url_input.send_keys('https://')
+
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_invalid_url_error()
+    
     def test_select_catalog_from_url(self, commerce_page):
         commerce_page.open()
 
@@ -105,6 +131,98 @@ class TestCommerce(BaseCase):
         )
         assert header_is_hidden
 
+    def test_required_catalog_url_error(self, commerce_page):
+        commerce_page.open()
 
-
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_url()
         
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_required_field_error()
+
+    def test_catalog_url_auth_button_appears(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_url() 
+
+        url_input = commerce_page.find_catalog_from_url_input()
+        url_input.send_keys('https://education.vk.company/')
+
+        assert commerce_page.find_catalog_url_auth_button()
+    
+    def test_invalid_file_format_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_url()
+        
+        url_input = commerce_page.find_catalog_from_url_input()
+        url_input.send_keys('https://education.vk.company/')
+        time.sleep(1)  # wait until url is processing
+
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_invalid_file_format_error()
+    
+    def test_required_marketplace_catalog_url_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_marketplace()
+        
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_required_field_error()
+    
+    def test_required_marketplace_http_protocol_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_marketplace()
+        
+        catalog_url_input = commerce_page.find_catalog_from_marketplace_input()
+        catalog_url_input.send_keys('abc')
+
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_required_http_protocol_error()
+    
+    def test_invalid_marketplace_url_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_marketplace()
+        
+        catalog_url_input = commerce_page.find_catalog_from_marketplace_input()
+        catalog_url_input.send_keys('https://')
+
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_invalid_url_error()
+    
+    def test_unsupported_marketplace_url_error(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.click_create_catalog_button()
+        commerce_page.select_catalog_from_marketplace()
+        
+        catalog_url_input = commerce_page.find_catalog_from_marketplace_input()
+        catalog_url_input.send_keys('https://education.vk.company/')
+
+        commerce_page.submit_create_catalog_button()
+
+        assert commerce_page.find_unsupported_marketplace_url_error()
+    
+    def test_search_catalog(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.search_for_catalog('каталог')
+        assert commerce_page.find_search_results_table()
+    
+    def test_search_not_found(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.search_for_catalog('abc123')
+        assert commerce_page.find_search_not_found_message()
