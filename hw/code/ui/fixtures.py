@@ -1,5 +1,4 @@
 from ui.pages.commerce_page import CommercePage
-from utils.cookies import load_cookies, save_cookies
 
 import pytest
 from selenium import webdriver
