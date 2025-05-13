@@ -1,6 +1,3 @@
-from ui.pages.commerce_page import CommercePage
-from utils.cookies import load_cookies, save_cookies
-
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -67,8 +64,3 @@ def all_drivers(config, request):
     browser.get(url)
     yield browser
     browser.quit()
-
-
-@pytest.fixture
-def commerce_page(driver): 
-    return CommercePage(driver=driver)
