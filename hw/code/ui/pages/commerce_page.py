@@ -83,3 +83,51 @@ class CommercePage(BasePage):
     
     def find_search_not_found_message(self):
         return self.find(CommerceLocators.SEARCH_NOT_FOUND_MESSAGE)
+    
+    def open_catalog(self, index):
+        self.wait().until(
+            lambda d: len(d.find_elements(*CommerceLocators.CATALOG_ROW)) > index
+        )
+        catalogs = self.driver.find_elements(*CommerceLocators.CATALOG_ROW)
+        catalogs[index].click()
+
+    def open_catalog_settings(self):
+        self.click(CommerceLocators.CATALOG_SETTINGS_BUTTON)
+    
+    def find_catalog_settings_header(self):
+        return self.find(CommerceLocators.CATALOG_SETTINGS_HEADER)
+    
+    def submit_catalog_settings(self):
+        self.click(CommerceLocators.CATALOG_SETTINGS_SUBMIT_BUTTON)
+    
+    def delete_catalog_from_settings(self):
+        self.click(CommerceLocators.CATALOG_SETTINGS_DELETE_BUTTON)
+    
+    def cancel_catalog_settings(self):
+        self.click(CommerceLocators.CANCEL_CATALOG_SETTINGS_BUTTON)
+    
+    def fill_settings_catalog_name(self, name):
+        name_input = self.find(CommerceLocators.CATALOG_SETTINGS_NAME_INPUT)
+        name_input.clear()
+        name_input.send_keys(name)
+    
+    def find_catalog_name(self):
+        return self.find(CommerceLocators.CATALOG_NAME)
+    
+    def wait_catalog_name(self, name):
+        self.wait().until(
+            lambda d: name == self.find(CommerceLocators.CATALOG_NAME).text
+        )
+        return True
+    
+    def close_catalog_settings(self):
+        self.click(CommerceLocators.CLOSE_CATALOG_SETTINGS_BUTTON)
+    
+    def cancel_catalog_settings(self):
+        self.click(CommerceLocators.CANCEL_CATALOG_SETTINGS_BUTTON)
+    
+    def open_catalog_settings(self):
+        self.click(CommerceLocators.TABLE_SETTINGS_BUTTON)
+    
+    def find_table_settings_header(self):
+        return self.find(CommerceLocators.TABLE_SETTINGS_HEADER)

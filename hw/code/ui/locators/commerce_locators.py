@@ -33,4 +33,16 @@ class CommerceLocators:
     SEARCH_CATALOG_INPUT = (By.XPATH, '//input[@data-testid="search" and @placeholder="Поиск"]')
     SEARCH_RESULTS_TABLE = (By.XPATH, '//div[@class="BaseTable__table BaseTable__table-main" and @role="table"]')
     SEARCH_NOT_FOUND_MESSAGE = (By.XPATH, '//div[contains(@class, "EmptyView_content") and .//h2[text()="Ничего не нашлось"]]')
-    
+
+    CATALOG_ROW = (By.XPATH, '//a[@data-testid="catalog-item"]')
+    CATALOG_NAME = (By.XPATH, '//h4[contains(@class, "CatalogHeader_header")]')
+    CATALOG_SETTINGS_BUTTON = (By.XPATH, '//button[contains(@class, "Nav_buttonSettings") and .//span[text()="Настройки"]]')
+    CATALOG_SETTINGS_HEADER = (By.XPATH, '//h2[contains(@class, "ModalSidebarPage_title") and text()="Настройки каталога"]')
+    CLOSE_CATALOG_SETTINGS_BUTTON = (By.XPATH, '//button[@aria-label="Close"]')
+    CANCEL_CATALOG_SETTINGS_BUTTON = (By.XPATH, '//button[@data-testid="cancel"]')
+    CATALOG_SETTINGS_SUBMIT_BUTTON = (By.XPATH, '//button[@data-testid="submit"]')
+    CATALOG_SETTINGS_DELETE_BUTTON = (By.XPATH, '//button[@data-testid="delete"]')
+    CATALOG_SETTINGS_NAME_INPUT = (By.XPATH, '//input[@data-testid="catalogName-input"]')
+
+    TABLE_SETTINGS_BUTTON = (By.XPATH, '//button[contains(@class, "TableSettings_settingsButton")]')
+    TABLE_SETTINGS_HEADER = (By.XPATH, '//h2[contains(@class, "vkuiPanelHeader__content-in")]')

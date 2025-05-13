@@ -115,7 +115,7 @@ class TestCommerce(BaseCase):
         commerce_page.click_create_catalog_button()
         commerce_page.close_create_catalog_modal()
 
-        header_is_hidden = commerce_page.wait(5).until(
+        header_is_hidden = commerce_page.wait().until(
             EC.invisibility_of_element_located(CommerceLocators.NEW_CATALOG_HEADER)
         )
         assert header_is_hidden
@@ -126,7 +126,7 @@ class TestCommerce(BaseCase):
         commerce_page.click_create_catalog_button()
         commerce_page.cancel_create_catalog_modal()
 
-        header_is_hidden = commerce_page.wait(5).until(
+        header_is_hidden = commerce_page.wait().until(
             EC.invisibility_of_element_located(CommerceLocators.NEW_CATALOG_HEADER)
         )
         assert header_is_hidden
@@ -226,3 +226,62 @@ class TestCommerce(BaseCase):
 
         commerce_page.search_for_catalog('abc123')
         assert commerce_page.find_search_not_found_message()
+    
+    def test_open_catalog_from_list(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.open_catalog(0)
+        assert '/hq/ecomm/catalogs/' in self.driver.current_url
+
+    def test_open_catalog_settings_button(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.open_catalog(0)
+        commerce_page.open_catalog_settings()
+        assert commerce_page.find_catalog_settings_header()
+    
+    def test_submit_catalog_settings(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.open_catalog(0)
+        commerce_page.open_catalog_settings()
+
+        new_name = 'Товары - Каталог foobar'
+
+        commerce_page.fill_settings_catalog_name(new_name)
+        commerce_page.submit_catalog_settings()
+    
+        assert commerce_page.wait_catalog_name(new_name)
+    
+    def test_close_catalog_settings(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.open_catalog(0)
+        commerce_page.open_catalog_settings()
+
+        commerce_page.close_catalog_settings()
+
+        header_is_hidden = commerce_page.wait().until(
+            EC.invisibility_of_element_located(CommerceLocators.CATALOG_SETTINGS_HEADER)
+        )
+        assert header_is_hidden
+
+    def test_cancel_catalog_settings(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.open_catalog(0)
+        commerce_page.open_catalog_settings()
+
+        commerce_page.cancel_catalog_settings()
+
+        header_is_hidden = commerce_page.wait().until(
+            EC.invisibility_of_element_located(CommerceLocators.CATALOG_SETTINGS_HEADER)
+        )
+        assert header_is_hidden
+    
+    def test_open_table_settings(self, commerce_page):
+        commerce_page.open()
+
+        commerce_page.open_catalog(0)
+        commerce_page.open_catalog_settings()
+        assert commerce_page.find_table_settings_header()
