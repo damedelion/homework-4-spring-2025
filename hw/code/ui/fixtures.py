@@ -1,17 +1,10 @@
-from ui.pages.commerce_page import CommercePage
-from utils.cookies import load_cookies, save_cookies
+from ui.pages.leadforms_page import LeadformsPage
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
-import pathlib
-
-
-COOKIES_FILE = pathlib.Path('cookies.json')
-
 
 @pytest.fixture()
 def driver(config, request):
@@ -70,5 +63,5 @@ def all_drivers(config, request):
 
 
 @pytest.fixture
-def commerce_page(driver): 
-    return CommercePage(driver=driver)
+def leadforms_page(driver): 
+    return LeadformsPage(driver=driver)

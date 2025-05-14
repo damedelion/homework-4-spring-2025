@@ -5,7 +5,7 @@ class LeadformsLocators:
     FOOTER = (By.ID, 'footer')
     BASETABLE_HEADER = (By.CLASS_NAME, "BaseTable__header")
     BASETABLE_ROW = (By.CLASS_NAME, "BaseTable__row")
-    CREATE_BUTTON = (By.XPATH, "//button[contains(@class, 'LeadForms_createButton')]")
+    CREATE_BUTTON = (By.XPATH, "//button[contains(., 'Создать лид-форму')]")
     MODAL_SIDEBAR_PAGE = (By.XPATH, "//form[contains(@class, 'ModalSidebarPage_container')]")
     STEPLIST = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_stepList')]")
     MODAL_SIDEBAR_PAGE_CONTENT = (By.XPATH, "//div[contains(@class, 'ModalSidebarPage_content')]")
@@ -40,3 +40,4 @@ class LeadformsLocators:
     SETTINGS_NAME_INPUT = (By.XPATH, "//input[contains(@placeholder, 'Введите фамилию, имя и отчество')]")
     SETTINGS_ADDRESS_INPUT = (By.XPATH, "//input[contains(@placeholder, 'Введите адрес')]")
     SAVE_BUTTON = (By.XPATH, "//button[contains(@title, 'Сохранить')]")
+    PREVIEW_MODAL = (By. XPATH, "//div[contains(@class, 'CreateLeadFormModal_previewComponentWrap')]")
