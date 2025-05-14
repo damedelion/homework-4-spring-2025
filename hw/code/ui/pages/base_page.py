@@ -68,11 +68,7 @@ class BasePage(object):
         elem = self.find(locator, timeout=timeout)
         elem = self.wait(timeout).until(EC.element_to_be_clickable(locator))
         elem.click()
-
-    def click_element(self, locator, timeout=10):
-        element = self.wait(timeout).until(EC.element_to_be_clickable(locator))
-        element.click()
-
+        
     def hover(self, locator):
         elem = self.find(locator)
         ActionChains(self.driver).move_to_element(elem).perform()

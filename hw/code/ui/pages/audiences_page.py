@@ -87,7 +87,7 @@ class AudiencesPage(BasePage):
         row = self.get_audience_row(audience_name)
         checkbox_label = row.find_element(*AudiencesPageLocators.AUDIENCE_IN_LIST_CHECKBOX_LOCATOR)
         if (not self.is_checkbox_checked(checkbox_label)):
-            self.click_element(checkbox_label)
+            checkbox_label.click()
 
         self.click(AudiencesPageLocators.NAVBAR_DELETE_BUTTON)
         self.wait_until_visible(AudiencesPageLocators.CONFIRM_DELETE_AUDIENCE_BUTTON)
