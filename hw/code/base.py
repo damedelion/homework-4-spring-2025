@@ -1,8 +1,6 @@
 import pytest
 
 from contextlib import contextmanager
-from _pytest.fixtures import FixtureRequest
-
 
 class BaseCase:
     driver = None
@@ -20,6 +18,6 @@ class BaseCase:
         self.driver.switch_to.window(current)
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup(self, driver, config, request: FixtureRequest):
+    def setup(self, driver, config):
         self.driver = driver
         self.config = config

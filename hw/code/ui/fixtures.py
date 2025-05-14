@@ -1,14 +1,11 @@
 from ui.pages.audiences_page import AudiencesPage
+from ui.pages.commerce_page import CommercePage
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
-import pathlib
-
 
 @pytest.fixture()
 def driver(config, request):
@@ -32,11 +29,8 @@ def driver(config, request):
     elif browser == 'chrome':
         options.add_argument('user-data-dir=vkads-userdata')
         options.add_argument('profile-directory=vkads-profile')
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=options)
+        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
     elif browser == 'firefox':
-        service = Service(GeckoDriverManager().install())
-        driver = webdriver.Firefox(service=service, options=options)
         driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
     else:
         raise RuntimeError(f'unsupported browser: "{browser}"')
@@ -72,3 +66,7 @@ def all_drivers(config, request):
 @pytest.fixture
 def audiences_page(driver): 
     return AudiencesPage(driver=driver)
+  
+@pytest.fixture
+def commerce_page(driver): 
+    return CommercePage(driver=driver)

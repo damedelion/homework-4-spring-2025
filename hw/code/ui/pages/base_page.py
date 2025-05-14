@@ -12,7 +12,6 @@ from ui.pages.base_url import VKADS_BASE_URL
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
 
-
 class PageNotOpenedExeption(Exception):
     pass
 
@@ -92,3 +91,6 @@ class BasePage(object):
 
     def wait_until_invisible(self, locator, timeout=10):
         WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+
+    def find_all(self, locator):
+        return self.driver.find_elements(*locator)
