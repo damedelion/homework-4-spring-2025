@@ -1,9 +1,20 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+from ui.pages.leadforms_page import LeadformsPage
+=======
+from ui.pages.audiences_page import AudiencesPage
+from ui.pages.commerce_page import CommercePage
+>>>>>>> main
+
+>>>>>>> main
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
+<<<<<<< HEAD
 import pathlib
 
 from ui.pages.campaign_page import CampaignPage
@@ -11,6 +22,8 @@ from ui.pages.campaign_page import CampaignPage
 COOKIES_FILE = pathlib.Path('cookies.json')
 
 
+=======
+>>>>>>> main
 @pytest.fixture()
 def driver(config, request):
     browser = config['browser']
@@ -67,6 +80,20 @@ def all_drivers(config, request):
     browser.quit()
 
 @pytest.fixture
+<<<<<<< HEAD
 def campaign_page(driver):
     driver.get(CampaignPage.url)
     return CampaignPage(driver=driver)
+=======
+<<<<<<< HEAD
+def leadforms_page(driver): 
+    return LeadformsPage(driver=driver)
+=======
+def audiences_page(driver): 
+    return AudiencesPage(driver=driver)
+  
+@pytest.fixture
+def commerce_page(driver): 
+    return CommercePage(driver=driver)
+>>>>>>> main
+>>>>>>> main
