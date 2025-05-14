@@ -11,4 +11,5 @@ options.add_argument('profile-directory=vkads-profile')
 
 
 driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
-input('click Enter to exit...')
+input('click Enter to finish...')
+driver.quit()
