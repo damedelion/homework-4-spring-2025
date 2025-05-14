@@ -6,6 +6,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 import pathlib
 
+from ui.pages.campaign_page import CampaignPage
 
 COOKIES_FILE = pathlib.Path('cookies.json')
 
@@ -64,3 +65,8 @@ def all_drivers(config, request):
     browser.get(url)
     yield browser
     browser.quit()
+
+@pytest.fixture
+def campaign_page(driver):
+    driver.get(CampaignPage.url)
+    return CampaignPage(driver=driver)
