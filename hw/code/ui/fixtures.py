@@ -1,4 +1,3 @@
-from ui.pages.feed_page import FeedPage
 from ui.pages.audiences_page import AudiencesPage
 
 import pytest
@@ -68,11 +67,6 @@ def all_drivers(config, request):
     browser.get(url)
     yield browser
     browser.quit()
-
-
-@pytest.fixture
-def feed_page(driver):
-    return FeedPage(driver=driver)
 
 
 @pytest.fixture

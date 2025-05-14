@@ -3,8 +3,6 @@ import pytest
 from contextlib import contextmanager
 from _pytest.fixtures import FixtureRequest
 
-from ui.pages.feed_page import FeedPage
-
 
 class BaseCase:
     driver = None
@@ -25,5 +23,3 @@ class BaseCase:
     def setup(self, driver, config, request: FixtureRequest):
         self.driver = driver
         self.config = config
-
-        self.feed_page: FeedPage = (request.getfixturevalue('feed_page'))
