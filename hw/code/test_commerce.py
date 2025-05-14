@@ -35,6 +35,8 @@ class TestCommerce(BaseCase):
     def test_required_catalog_name_error(self, commerce_page):
         commerce_page.open()
 
+        commerce_page.click_create_catalog_button() 
+
         catalog_name_input = commerce_page.find_catalog_name_input()
         catalog_name_input.clear()
 
