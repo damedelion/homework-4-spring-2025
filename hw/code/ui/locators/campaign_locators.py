@@ -6,8 +6,8 @@ class CampaignLocators:
     SITE_FIELD = (By.XPATH, '//div[@data-id="site_conversions"]')
     SITE_URL_FIELD = (By.XPATH, '//input[@placeholder="Вставьте ссылку или выберите из списка"]')
 
-    CHANGE_NAME_BTN = (By.XPATH, "//*[contains(@class, 'EditableTitle_container__')]")
-    CHANGE_NAME_FIELD = (By.XPATH, "//*[contains(@class, 'EditableTitle_container__')]//textarea")
+    CHANGE_NAME_BTN = (By.XPATH, "//div[contains(@class, 'EditableTitle_container__')]")
+    CHANGE_NAME_FIELD = (By.XPATH, "//div[contains(@class, 'EditableTitle_container__')]//textarea")
     CHANGE_NAME_ACCEPT = (By.XPATH, "//*[contains(@class, 'EditableTitle_doneIcon__')]")
 
     CONTINUE_BTN = (By.XPATH, "//*[contains(@class, 'vkuiButton__content') and text() = 'Продолжить']")
