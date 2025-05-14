@@ -32,4 +32,8 @@ def config(request):
         'debug_log': debug_log,
         'selenoid': selenoid,
         'vnc': vnc,
-    }
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "needs_audience: mark test as requiring pre-created audience"
+    )

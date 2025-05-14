@@ -1,3 +1,4 @@
+from ui.pages.audiences_page import AudiencesPage
 from ui.pages.commerce_page import CommercePage
 
 import pytest
@@ -5,12 +6,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
-import pathlib
-
-
-COOKIES_FILE = pathlib.Path('cookies.json')
-
 
 @pytest.fixture()
 def driver(config, request):
@@ -68,6 +63,10 @@ def all_drivers(config, request):
     browser.quit()
 
 
+@pytest.fixture
+def audiences_page(driver): 
+    return AudiencesPage(driver=driver)
+  
 @pytest.fixture
 def commerce_page(driver): 
     return CommercePage(driver=driver)
