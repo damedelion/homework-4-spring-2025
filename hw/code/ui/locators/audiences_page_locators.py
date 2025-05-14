@@ -11,8 +11,12 @@ class AudiencesPageLocators(BasePageLocators):
     AUDIENCE_ROW = (By.XPATH, "//div[@role='row' and contains(@class, 'BaseTable__row')]")
     AUDIENCE_IN_LIST_CHECKBOX_LOCATOR = (By.XPATH, './/label[contains(@class, "vkuiCheckbox")]')
     AUDIENCE_IN_LIST_CHECKBOX_LOCATOR_ON = (By.CLASS_NAME, "vkuiIcon--check_box_on_20")
-    ABS_AUDIENCE_NAME_IN_ROW = lambda self, name: (By.XPATH, f'//h5[contains(@class, "NameCell_name") and text()="{name}"]')
-    REL_AUDIENCE_NAME_IN_ROW = lambda self, name: (By.XPATH, f'.//h5[contains(@class, "NameCell_name") and text()="{name}"]')
+    @staticmethod
+    def ABS_AUDIENCE_NAME_IN_ROW(name):
+        return (By.XPATH, f'//h5[contains(@class, "NameCell_name") and text()="{name}"]')
+    @staticmethod
+    def REL_AUDIENCE_NAME_IN_ROW(name):
+        return (By.XPATH, f'.//h5[contains(@class, "NameCell_name") and text()="{name}"]')
     CONFIRM_DELETE_AUDIENCE_BUTTON = (By.XPATH, '//button[contains(@class, "vkuiButton") and .//span[text()="Удалить"]]')
     SHARE_HINT_TOOLTIP = (By.XPATH,'//div[contains(@class, "Tooltip_tooltip__") and contains(text(), "Выберите аудитории, которыми хотите поделиться")]')
     DELETE_HINT_TOOLTIP = (By.XPATH, '//div[contains(@class, "Tooltip_tooltip__") and contains(text(), "Выберите аудитории, которые хотите удалить")]')

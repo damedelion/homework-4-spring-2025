@@ -18,8 +18,6 @@ class PageNotOpenedExeption(Exception):
 
 
 class BasePage(object):
-
-    locators = basic_locators.BasePageLocators()
     url = VKADS_BASE_URL
 
     def __init__(self, driver):
@@ -58,9 +56,9 @@ class BasePage(object):
             return False
 
     def search(self, query):
-        elem = self.find(self.locators.QUERY_LOCATOR_ID)
+        elem = self.find(BasePageLocators.QUERY_LOCATOR_ID)
         elem.send_keys(query)
-        go_button = self.find(self.locators.GO_BUTTON_LOCATOR)
+        go_button = self.find(BasePageLocators.GO_BUTTON_LOCATOR)
         go_button.click()
         self.my_assert()
 
