@@ -2,7 +2,6 @@ import pytest
 
 from contextlib import contextmanager
 
-
 class BaseCase:
     driver = None
     config = None

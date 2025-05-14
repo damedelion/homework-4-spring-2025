@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 from ui.pages.leadforms_page import LeadformsPage
+=======
+from ui.pages.audiences_page import AudiencesPage
+from ui.pages.commerce_page import CommercePage
+>>>>>>> main
 
 import pytest
 from selenium import webdriver
@@ -63,5 +68,14 @@ def all_drivers(config, request):
 
 
 @pytest.fixture
+<<<<<<< HEAD
 def leadforms_page(driver): 
     return LeadformsPage(driver=driver)
+=======
+def audiences_page(driver): 
+    return AudiencesPage(driver=driver)
+  
+@pytest.fixture
+def commerce_page(driver): 
+    return CommercePage(driver=driver)
+>>>>>>> main
