@@ -15,15 +15,11 @@ class TestAudiences(BaseCase):
             if 'needs_audience' in request.keywords:
                 self.audience_name = f"Test Audience {int(time.time())}"
                 audiences_page.create_audience(self.audience_name)
-            
             yield     
         finally:          
             if 'needs_cleanup' in request.keywords:
-                try:
-                    if audiences_page.has_audiences():
-                        audiences_page.delete_all_audiences()
-                except:
-                    pass            
+                if audiences_page.has_audiences():
+                    audiences_page.delete_all_audiences()         
 
     # ========== Вкладка "Аудитории": пустое состояние ==========
 
