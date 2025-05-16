@@ -3,206 +3,269 @@ import time
 
 from base import BaseCase
 
+from ui.locators.audiences_page_locators import AudiencesPageLocators
+
 class TestAudiences(BaseCase):
 
     @pytest.fixture(scope="function", autouse=True)
     def setup_teardown_audience(self, request, audiences_page):
-        """Фикстура для создания/удаления аудитории только для тестов с маркером needs_audience"""
         audiences_page.open()
-        
-        if 'needs_audience' in request.keywords:
-            self.audience_name = f"Test Audience {int(time.time())}"
-            audiences_page.create_audience(self.audience_name)
-            yield
-            audiences_page.delete_audience(self.audience_name)
-        else:
-            yield
+        self.audience_name = None
+        try:
+            if 'needs_audience' in request.keywords:
+                self.audience_name = f"Test Audience {int(time.time())}"
+                audiences_page.create_audience(self.audience_name)
+            
+            yield     
+        finally:          
+            if 'needs_cleanup' in request.keywords:
+                try:
+                    if audiences_page.has_audiences():
+                        audiences_page.delete_all_audiences()
+                except:
+                    pass            
 
     # ========== Вкладка "Аудитории": пустое состояние ==========
 
     def test_empty_state_ui_elements(self, audiences_page):
         audiences_page.open()
-        
-        assert audiences_page.is_empty_state_ui_correct()
 
-    def test_create_audience_button_click(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.click_create_audience_button()
-
-        assert audiences_page.is_create_audience_menu_opened()
+        assert (
+            audiences_page.is_visible(AudiencesPageLocators.HEADER("Аудиторий пока нет")) and
+            audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_BUTTON) and
+            audiences_page.is_visible(AudiencesPageLocators.KEBAB_MENU) and
+            audiences_page.is_visible(AudiencesPageLocators.LINK("Как работают аудитории"))
+        )
 
     def test_kebab_menu_options_empty_state(self, audiences_page):
         audiences_page.open()
+        audiences_page.click_kebab_menu()
 
-        assert audiences_page.check_kebab_menu_options_empty_state()
+        expected_first_action_test = "Активировать внешнюю аудиторию"
+        expected_second_action_text = "Перенести аудитории из кабинета ВКонтакте"
+        options_text = audiences_page.get_actions_text()
+        assert len(options_text) == 2
+        got_first_action_test, got_second_action_text = options_text
+        assert (
+            got_first_action_test == expected_first_action_test and
+            got_second_action_text == expected_second_action_text
+        )
 
     # ========== Вкладка "Аудитории": при наличии аудиторий ==========
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_navbar_ui_with_audiences(self, audiences_page):
         audiences_page.open()
 
-        assert audiences_page.is_navbar_ui_correct()
+        assert (
+            audiences_page.is_visible(AudiencesPageLocators.NAVBAR) and
+            audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_BUTTON) and
+            audiences_page.is_visible(AudiencesPageLocators.NAVBAR_KEBAB_MENU) and
+            audiences_page.is_visible(AudiencesPageLocators.NAVBAR_FILTER_BUTTON) and
+            audiences_page.is_visible(AudiencesPageLocators.NAVBAR_SHARE_BUTTON) and
+            audiences_page.is_visible(AudiencesPageLocators.NAVBAR_DELETE_BUTTON) and
+            audiences_page.is_visible(AudiencesPageLocators.NAVBAR_SEARCH_INPUT)
+        )
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_audience_list_ui(self, audiences_page):
         audiences_page.open()
 
-        assert audiences_page.is_audience_list_ui_correct()
+        assert (
+            audiences_page.is_visible(AudiencesPageLocators.AUDIENCE_LIST) and
+            audiences_page.is_visible(AudiencesPageLocators.AUDIENCE_NAME_COLUMN) and
+            audiences_page.is_visible(AudiencesPageLocators.AUDIENCE_REACH_COLUMN)
+        )
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_filter_functionality(self, audiences_page):
         audiences_page.open()
 
-        check_result =  audiences_page.check_filter_functionality()
+        audiences_page.click_navbar_filter_button()
+        filter_option = "Слушатели музыкантов"
+        audiences_page.click_filter_option(filter_option)
+
+        audiences_page.click_apply_filter_button()
+
+        audiences_page.wait_until_invisible_row(self.audience_name)
+        content_layout_text = audiences_page.get_content_layout_text()
+
         audiences_page.clear_filters()
 
-        assert check_result
+        assert "Ничего не нашлось" in content_layout_text
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_share_button_tooltip_without_selection(self, audiences_page):
         audiences_page.open()
 
         audiences_page.hover_navbar_share_button()
 
-        assert audiences_page.is_visible_share_hint()
+        share_hint_tooltip_message = "Выберите аудитории, которыми хотите поделиться"
+        got_hint_tooltip_message = audiences_page.get_hint_tooltip_message()
+
+        assert got_hint_tooltip_message == share_hint_tooltip_message
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_delete_button_tooltip_without_selection(self, audiences_page):
         audiences_page.open()
 
         audiences_page.hover_navbar_delete_button()
 
-        assert audiences_page.is_visible_delete_hint()
+        delete_hint_tooltip_message = "Выберите аудитории, которые хотите удалить"
+        got_hint_tooltip_message = audiences_page.get_hint_tooltip_message()
+
+        assert got_hint_tooltip_message == delete_hint_tooltip_message
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_search_functionality(self, audiences_page):
         audiences_page.open()
 
-        check_result = audiences_page.check_search_functionality(self.audience_name)
+        audiences_page.input_navbar_search(self.audience_name)
+
+        audience_row = audiences_page.get_audience_row(self.audience_name)
+
         audiences_page.clear_search()
 
-        assert check_result
+        assert audience_row
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_search_empty_results(self, audiences_page):
         audiences_page.open()
 
-        check_result = audiences_page.check_search_empty_result(int(time.time()))
+        audiences_page.input_navbar_search(int(time.time()))
+
+        audiences_page.wait_until_invisible_row(self.audience_name)
+        content_layout_text = audiences_page.get_content_layout_text()
+
         audiences_page.clear_search()
 
-        assert check_result
+        assert "Ничего не нашлось" in content_layout_text
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_search_max_length_validation(self, audiences_page):
         audiences_page.open()
 
-        assert audiences_page.check_search_validation()
+        audiences_page.input_navbar_search("a" * 256)
+
+        search_input_error_hint_tooltip_message = "Максимальная длина 255 символов"
+        got_hint_tooltip_message = audiences_page.get_hint_tooltip_message()
+
+        audiences_page.clear_search()
+
+        assert got_hint_tooltip_message == search_input_error_hint_tooltip_message
 
     # ========== Тесты меню создания аудитории ==========
 
     def test_create_audience_menu_ui(self, audiences_page):
         audiences_page.open()
 
-        audiences_page.open_create_audience_menu()
+        audiences_page.click_create_audience_button()
 
-        assert audiences_page.is_create_audience_menu_ui_correct()
+        assert (
+            audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_MENU_TITLE) and
+            audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_NAME_INPUT) and
+            audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_ADD_SOURCE_BUTTON) and
+            audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_EXCLUDE_SOURCE_BUTTON)
+        )
+
+    @pytest.mark.needs_cleanup
+    def test_create_audience(self, audiences_page):
+        audiences_page.open()
+
+        audiences_page.click_create_audience_button()
+
+        audience_name = f"Test Audience {int(time.time())}"
+        audiences_page.enter_audience_name(audience_name)
+
+        source = "Категории мобильного приложения"
+        category_option = "Бизнес"
+
+        audiences_page.click_add_source_button()
+        audiences_page.click_category_link(source)
+        audiences_page.select_category_option(category_option)
+        audiences_page.confirm_source_selection(source)
+
+        audiences_page.save_audience()
+
+        audience_row = audiences_page.get_audience_row(audience_name)
+
+        assert audience_row
+
+    @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
+    def test_delete_audience(self, audiences_page):
+        audience_row = audiences_page.get_audience_row(self.audience_name)
+        audiences_page.select_audience_checkbox(audience_row)
+        
+        audiences_page.click_navbar_delete_button()
+        audiences_page.confirm_deletion_in_dialog()
+        audiences_page.wait_for_audience_disappear(self.audience_name)
+        
+        content_layout_text = audiences_page.get_content_layout_text()
+
+        assert "Аудиторий пока нет" in content_layout_text
 
     def test_audience_name_validation(self, audiences_page):
         audiences_page.open()
 
-        audiences_page.open_create_audience_menu()
+        audiences_page.click_create_audience_button()
 
-        assert audiences_page.check_name_validation()
+        audiences_page.input_create_audience_name("a" * 256)
 
-    def test_add_source_button(self, audiences_page):
-        audiences_page.open()
+        expected_error_message = "Напишите текст не больше 255 символов"
+        got_error_message = audiences_page.get_error_message()
 
-        audiences_page.open_create_audience_menu()
-        audiences_page.click_add_source_button()
-
-        assert audiences_page.is_add_source_menu_opened()
-
-    def test_exclude_source_button(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.open_create_audience_menu()
-        audiences_page.click_exclude_source_button()
-
-        assert audiences_page.is_exclude_source_menu_opened()
-
-    def test_source_edit_button(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.open_create_audience_menu()
-        audiences_page.add_test_source()
-        audiences_page.click_edit_source_button()
-
-        assert audiences_page.is_source_menu_opened()
-
-    def test_excluded_source_edit_button(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.open_create_audience_menu()
-        audiences_page.add_test_excluded_source()
-
-        assert audiences_page.is_source_menu_opened()
+        assert got_error_message == expected_error_message
 
     def test_same_source_and_excluded_source_error(self, audiences_page):
         audiences_page.open()
 
-        audiences_page.open_create_audience_menu()
-        audiences_page.add_test_source()
-        audiences_page.add_same_excluded_source()
+        audiences_page.click_create_audience_button()
 
-        assert audiences_page.is_same_source_error_visible()
+        source = "Категории мобильного приложения"
+        category_option = "Бизнес"
+        
+        audiences_page.click_add_source_button()
+        audiences_page.click_category_link(source)
+        audiences_page.select_category_option(category_option)
+        audiences_page.confirm_source_selection(source)
 
-    def test_successful_audience_creation(self, audiences_page):
-        audiences_page.open()
+        audiences_page.click_exclude_source_button()
+        audiences_page.click_category_link(source)
+        audiences_page.select_category_option(category_option)
+        audiences_page.confirm_source_selection(source)
 
-        audience_name = f"Test Audience {int(time.time())}"
-        audiences_page.create_audience(audience_name)
+        expected_same_source_error_description = "Нельзя исключать выбранный источник. Просто удалите его"
+        got_same_source_error_description = audiences_page.get_error_description()
 
-        is_audience_present = audiences_page.is_audience_present(audience_name)
-        audiences_page.delete_audience(audience_name)
-
-        assert is_audience_present
-
-    # ========== Тесты меню добавления источника ==========
-
-    def test_add_source_menu_ui(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.open_add_source_menu()
-
-        assert audiences_page.is_add_source_menu_ui_correct()
-
-    def test_source_category_link(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.open_add_source_menu()
-        audiences_page.click_mobile_app_category_link()
-
-        assert audiences_page.is_source_menu_opened()
-
-    # ========== Тесты меню исключения источника ==========
-
-    def test_exclude_source_menu_ui(self, audiences_page):
-        audiences_page.open()
-
-        audiences_page.open_exclude_source_menu()
-
-        assert audiences_page.is_exclude_source_menu_ui_correct()
+        assert got_same_source_error_description == expected_same_source_error_description
 
     # ========== Тесты окна настроек шеринга ==========
 
     @pytest.mark.needs_audience
+    @pytest.mark.needs_cleanup
     def test_share_settings_validation(self, audiences_page):
         audiences_page.open()
 
-        audiences_page.share_audience()
-        is_share_link_present = audiences_page.is_share_link_present()
+        audience_row = audiences_page.get_audience_row(self.audience_name)
+        audiences_page.select_audience_checkbox(audience_row)
+
+        audiences_page.click_navbar_share_button()
+        audiences_page.select_public_key_radio()
+        audiences_page.click_share_settings_save_button()
+        audiences_page.wait_for_share_window_to_close()
+
+        expected_sharing_link_text = "https://ads.vk.com/hq/audience?sharingKey="
+        got_sharing_link_text = audiences_page.get_sharing_link_text()
         audiences_page.close_share_link_window()
+        audiences_page.select_audience_checkbox(audience_row)
         
-        assert is_share_link_present
+        assert expected_sharing_link_text in got_sharing_link_text
