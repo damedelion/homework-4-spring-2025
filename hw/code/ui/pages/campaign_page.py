@@ -1,6 +1,5 @@
 import time
 
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -20,6 +19,13 @@ class CampaignPage(BasePage):
 
     def wait_displayed(self, locator, timeout=10):
         WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+        WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+
+    def wait_input(self, locator, input_text, timeout=10):
+        by, value = locator
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: d.find_element(by, value).get_attribute("value").replace('\xa0', ' ') == input_text
+        )
 
     def get_error_message(self):
         return self.find(CampaignLocators.ERROR_MESSAGE).text
@@ -64,6 +70,12 @@ class CampaignPage(BasePage):
         budget_field = self.find(CampaignLocators.SITE_BUDGET_INPUT)
         budget_field.clear()
         budget_field.send_keys(budget + Keys.RETURN)
+        self.wait_input(CampaignLocators.SITE_BUDGET_INPUT, f"{budget} ₽")
+
+    def choose_date(self):
+        self.click(CampaignLocators.END_DATE_FIELD)
+        self.wait_displayed(CampaignLocators.FIRST_AVAILABLE_DATE)
+        self.click(CampaignLocators.FIRST_AVAILABLE_DATE)
 
     def choose_region(self):
         self.click(CampaignLocators.GROUP_REGION)
@@ -94,3 +106,6 @@ class CampaignPage(BasePage):
         self.wait_displayed(CampaignLocators.NO_ACTIVE_CAMPAIGNS_LABEL)
         txt = self.find(CampaignLocators.NO_ACTIVE_CAMPAIGNS_LABEL).text
         return txt == 'Нет активных кампаний'
+
+    def wait_media_generation(self):
+        self.wait_displayed(CampaignLocators.VIDEO_CONTAINER)

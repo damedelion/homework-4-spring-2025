@@ -12,7 +12,7 @@ class TestCampaign(BaseCase):
         campaign_page.fill_site_url_field(url)
         campaign_page.click_budget_field()
         campaign_page.fill_budget_field(budget)
-        time.sleep(1) # без sleep не пишет: не удалось сгенерировать текст
+        campaign_page.choose_date()
 
         campaign_page.click_continue_btn()
         expected_url = "https://ads.vk.com/hq/new_create/ad_plan/new-site_conversions/ad_group/new-ad-group-form"
@@ -50,7 +50,7 @@ class TestCampaign(BaseCase):
         campaign_page.fill_site_url_field(url)
         campaign_page.click_budget_field()
         campaign_page.fill_budget_field(budget)
-        time.sleep(1) # без sleep не пишет: не удалось сгенерировать текст
+        campaign_page.choose_date()
 
         campaign_page.click_continue_btn()
         campaign_page.click_cancel_btn()
@@ -69,7 +69,7 @@ class TestCampaign(BaseCase):
         campaign_page.fill_site_url_field(url)
         campaign_page.click_budget_field()
         campaign_page.fill_budget_field(budget)
-        time.sleep(1) # без sleep не пишет: не удалось сгенерировать текст
+        campaign_page.choose_date()
 
         campaign_page.click_continue_btn()
         campaign_page.choose_region()
@@ -93,7 +93,7 @@ class TestCampaign(BaseCase):
         campaign_page.fill_site_url_field(url)
         campaign_page.click_budget_field()
         campaign_page.fill_budget_field(budget)
-        time.sleep(1) # без sleep не пишет: не удалось сгенерировать текст
+        campaign_page.choose_date()
 
         campaign_page.click_continue_btn()
         campaign_page.choose_region()
@@ -102,7 +102,7 @@ class TestCampaign(BaseCase):
         campaign_page.fill_ad_title(title)
         campaign_page.fill_ad_short_desc(desc)
         campaign_page.choose_default_media()
-        time.sleep(5) # без sleep не работает, т.к. надо подожать генерации превью
+        campaign_page.wait_media_generation()
         campaign_page.click_submit_btn()
 
         expected_url = 'https://ads.vk.com/hq/dashboard'

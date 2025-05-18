@@ -6,6 +6,9 @@ class CampaignLocators:
     SITE_FIELD = (By.XPATH, '//div[@data-id="site_conversions"]')
     SITE_URL_FIELD = (By.XPATH, '//input[@placeholder="Вставьте ссылку или выберите из списка"]')
 
+    END_DATE_FIELD = (By.XPATH, '//span[@data-testid="end-date"]')
+    FIRST_AVAILABLE_DATE = (By.XPATH, '(//div[contains(@class, "vkuiCalendarDay") and @aria-disabled="false"])[1]')
+
     CHANGE_NAME_BTN = (By.XPATH, "//div[contains(@class, 'EditableTitle_container__')]")
     CHANGE_NAME_FIELD = (By.XPATH, "//div[contains(@class, 'EditableTitle_container__')]//textarea")
     CHANGE_NAME_ACCEPT = (By.XPATH, "//*[contains(@class, 'EditableTitle_doneIcon__')]")
@@ -53,6 +56,8 @@ class CampaignLocators:
         By.XPATH,
         "//h2[contains(@class, 'vkuiTitle--level-2')]//span",
     )
+
+    VIDEO_CONTAINER = (By.XPATH, "//*[contains(@class, 'VideoContainer_container__')]")
 
     @staticmethod
     def CAMPAIGNS_TABLE_CHOOSE_OPTIONS(option):
