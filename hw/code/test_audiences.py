@@ -167,11 +167,11 @@ class TestAudiences(BaseCase):
     def test_delete_audience(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audience_row = audiences_page.get_audience_row(prepare_audience)
         audiences_page.select_audience_checkbox(audience_row)
-        
+
         audiences_page.click_navbar_delete_button()
         audiences_page.confirm_deletion_in_dialog()
         audiences_page.wait_for_audience_disappear(prepare_audience)
-        
+
         content_layout_text = audiences_page.get_content_layout_text()
 
         assert "Аудиторий пока нет" in content_layout_text
@@ -195,7 +195,7 @@ class TestAudiences(BaseCase):
 
         source = "Категории мобильного приложения"
         category_option = "Бизнес"
-        
+
         audiences_page.click_add_source_button()
         audiences_page.click_category_link(source)
         audiences_page.select_category_option(category_option)
@@ -228,5 +228,5 @@ class TestAudiences(BaseCase):
         got_sharing_link_text = audiences_page.get_sharing_link_text()
         audiences_page.close_share_link_window()
         audiences_page.select_audience_checkbox(audience_row)
-        
+
         assert expected_sharing_link_text in got_sharing_link_text
