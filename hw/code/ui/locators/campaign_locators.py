@@ -15,10 +15,7 @@ class CampaignLocators:
 
     CONTINUE_BTN = (By.XPATH, "//*[contains(@class, 'vkuiButton__content') and text() = 'Продолжить']")
     SUBMIT_BTN = (By.XPATH, "//*[contains(@class, 'vkuiButton__content') and text() = 'Опубликовать']")
-    CANCEL_BTN = (
-        By.XPATH,
-        "//button[@class='vkuiButton vkuiButton--size-l vkuiButton--mode-secondary vkuiButton--appearance-accent vkuiButton--align-center vkuiButton--stretched vkuiTappable vkuiInternalTappable vkuiTappable--sizeX-none vkuiTappable--hasHover vkuiTappable--hasActive vkui-focus-visible']"
-    )
+    CANCEL_BTN = (By.XPATH, "//button[contains(@class, 'vkuiButton') and contains(@class, 'vkuiButton--appearance-accent')]")
 
     ERROR_MESSAGE = (By.XPATH, "//span[contains(@class, 'vkuiFormItem__bottom')]//div")
     SITE_BUDGET = (By.XPATH, "//span[text()='Бюджет']")
