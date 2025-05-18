@@ -1,5 +1,3 @@
-import time
-
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -73,6 +71,7 @@ class CampaignPage(BasePage):
         self.wait_input(CampaignLocators.SITE_BUDGET_INPUT, f"{budget} ₽")
 
     def choose_date(self):
+        self.wait_displayed(CampaignLocators.END_DATE_FIELD)
         self.click(CampaignLocators.END_DATE_FIELD)
         self.wait_displayed(CampaignLocators.FIRST_AVAILABLE_DATE)
         self.click(CampaignLocators.FIRST_AVAILABLE_DATE)

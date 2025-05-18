@@ -1,5 +1,3 @@
-import time
-
 from base import BaseCase
 
 class TestCampaign(BaseCase):
@@ -80,7 +78,7 @@ class TestCampaign(BaseCase):
         got_url = campaign_page.driver.current_url
         assert(expected_url in got_url)
 
-    def test_create_campaign_create_form(self, campaign_page):
+    def test_create_campaign_create_form(self, campaign_page, cleanup_campaign):
         url = "https://github.com/damedelion/homework-4-spring-2025"
         budget = "123"
         title = "Test title"
@@ -110,6 +108,6 @@ class TestCampaign(BaseCase):
         got_url = campaign_page.driver.current_url
         assert(got_url.startswith(expected_url))
 
-        # удаляем для консистентности
+    def test_delete_campaign(self, campaign_page, prepare_campaign):
         campaign_page.choose_option('Удалить')
-        assert(campaign_page.check_no_campaigns())
+        assert campaign_page.check_no_campaigns()
