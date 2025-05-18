@@ -5,22 +5,8 @@ from base import BaseCase
 
 from ui.locators.audiences_page_locators import AudiencesPageLocators
 
-class TestAudiences(BaseCase):
-
-    @pytest.fixture(scope="function", autouse=True)
-    def setup_teardown_audience(self, request, audiences_page):
-        audiences_page.open()
-        self.audience_name = None
-        try:
-            if 'needs_audience' in request.keywords:
-                self.audience_name = f"Test Audience {int(time.time())}"
-                audiences_page.create_audience(self.audience_name)
-            yield     
-        finally:          
-            if 'needs_cleanup' in request.keywords:
-                if audiences_page.has_audiences():
-                    audiences_page.delete_all_audiences()         
-
+class TestAudiences(BaseCase):       
+    
     # ========== Вкладка "Аудитории": пустое состояние ==========
 
     def test_empty_state_ui_elements(self, audiences_page):
@@ -49,9 +35,7 @@ class TestAudiences(BaseCase):
 
     # ========== Вкладка "Аудитории": при наличии аудиторий ==========
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_navbar_ui_with_audiences(self, audiences_page):
+    def test_navbar_ui_with_audiences(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         assert (
@@ -64,9 +48,7 @@ class TestAudiences(BaseCase):
             audiences_page.is_visible(AudiencesPageLocators.NAVBAR_SEARCH_INPUT)
         )
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_audience_list_ui(self, audiences_page):
+    def test_audience_list_ui(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         assert (
@@ -75,9 +57,7 @@ class TestAudiences(BaseCase):
             audiences_page.is_visible(AudiencesPageLocators.AUDIENCE_REACH_COLUMN)
         )
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_filter_functionality(self, audiences_page):
+    def test_filter_functionality(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         audiences_page.click_navbar_filter_button()
@@ -86,16 +66,14 @@ class TestAudiences(BaseCase):
 
         audiences_page.click_apply_filter_button()
 
-        audiences_page.wait_until_invisible_row(self.audience_name)
+        audiences_page.wait_until_invisible_row(prepare_audience)
         content_layout_text = audiences_page.get_content_layout_text()
 
         audiences_page.clear_filters()
 
         assert "Ничего не нашлось" in content_layout_text
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_share_button_tooltip_without_selection(self, audiences_page):
+    def test_share_button_tooltip_without_selection(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         audiences_page.hover_navbar_share_button()
@@ -105,9 +83,7 @@ class TestAudiences(BaseCase):
 
         assert got_hint_tooltip_message == share_hint_tooltip_message
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_delete_button_tooltip_without_selection(self, audiences_page):
+    def test_delete_button_tooltip_without_selection(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         audiences_page.hover_navbar_delete_button()
@@ -117,36 +93,30 @@ class TestAudiences(BaseCase):
 
         assert got_hint_tooltip_message == delete_hint_tooltip_message
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_search_functionality(self, audiences_page):
+    def test_search_functionality(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
-        audiences_page.input_navbar_search(self.audience_name)
+        audiences_page.input_navbar_search(prepare_audience)
 
-        audience_row = audiences_page.get_audience_row(self.audience_name)
+        audience_row = audiences_page.get_audience_row(prepare_audience)
 
         audiences_page.clear_search()
 
         assert audience_row
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_search_empty_results(self, audiences_page):
+    def test_search_empty_results(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         audiences_page.input_navbar_search(int(time.time()))
 
-        audiences_page.wait_until_invisible_row(self.audience_name)
+        audiences_page.wait_until_invisible_row(prepare_audience)
         content_layout_text = audiences_page.get_content_layout_text()
 
         audiences_page.clear_search()
 
         assert "Ничего не нашлось" in content_layout_text
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_search_max_length_validation(self, audiences_page):
+    def test_search_max_length_validation(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
         audiences_page.input_navbar_search("a" * 256)
@@ -172,8 +142,7 @@ class TestAudiences(BaseCase):
             audiences_page.is_visible(AudiencesPageLocators.CREATE_AUDIENCE_EXCLUDE_SOURCE_BUTTON)
         )
 
-    @pytest.mark.needs_cleanup
-    def test_create_audience(self, audiences_page):
+    def test_create_audience(self, audiences_page, cleanup_all_audiences):
         audiences_page.open()
 
         audiences_page.click_create_audience_button()
@@ -195,15 +164,13 @@ class TestAudiences(BaseCase):
 
         assert audience_row
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_delete_audience(self, audiences_page):
-        audience_row = audiences_page.get_audience_row(self.audience_name)
+    def test_delete_audience(self, audiences_page, prepare_audience, cleanup_all_audiences):
+        audience_row = audiences_page.get_audience_row(prepare_audience)
         audiences_page.select_audience_checkbox(audience_row)
         
         audiences_page.click_navbar_delete_button()
         audiences_page.confirm_deletion_in_dialog()
-        audiences_page.wait_for_audience_disappear(self.audience_name)
+        audiences_page.wait_for_audience_disappear(prepare_audience)
         
         content_layout_text = audiences_page.get_content_layout_text()
 
@@ -246,12 +213,10 @@ class TestAudiences(BaseCase):
 
     # ========== Тесты окна настроек шеринга ==========
 
-    @pytest.mark.needs_audience
-    @pytest.mark.needs_cleanup
-    def test_share_settings_validation(self, audiences_page):
+    def test_share_settings_validation(self, audiences_page, prepare_audience, cleanup_all_audiences):
         audiences_page.open()
 
-        audience_row = audiences_page.get_audience_row(self.audience_name)
+        audience_row = audiences_page.get_audience_row(prepare_audience)
         audiences_page.select_audience_checkbox(audience_row)
 
         audiences_page.click_navbar_share_button()

@@ -10,6 +10,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 import pathlib
 
+import time
+
 @pytest.fixture()
 def driver(config, request):
     browser = config['browser']
@@ -75,10 +77,22 @@ def leadforms_page(driver):
     return LeadformsPage(driver=driver)
 
 @pytest.fixture
-def audiences_page(driver): 
+def audiences_page(driver):
+    driver.get(AudiencesPage.url)
     return AudiencesPage(driver=driver)
   
 @pytest.fixture
 def commerce_page(driver): 
     return CommercePage(driver=driver)
 
+@pytest.fixture
+def prepare_audience(audiences_page):
+    audience_name = f"Test Audience {int(time.time())}"
+    audiences_page.create_audience(audience_name)
+    yield audience_name
+
+@pytest.fixture
+def cleanup_all_audiences(audiences_page):
+    yield
+    if audiences_page.has_audiences():
+        audiences_page.delete_all_audiences()    
