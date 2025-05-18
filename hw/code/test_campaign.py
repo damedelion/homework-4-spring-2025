@@ -110,4 +110,6 @@ class TestCampaign(BaseCase):
 
     def test_delete_campaign(self, campaign_page, prepare_campaign):
         campaign_page.choose_option('Удалить')
-        assert campaign_page.check_no_campaigns()
+        got = campaign_page.campaign_main_page_text()
+        expected = 'Нет активных кампаний'
+        assert(expected == got)

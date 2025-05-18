@@ -101,10 +101,9 @@ class CampaignPage(BasePage):
         self.click(CampaignLocators.CAMPAIGNS_TABLE_ACTIONS)
         self.click(CampaignLocators.CAMPAIGNS_TABLE_CHOOSE_OPTIONS(option))
 
-    def check_no_campaigns(self):
+    def campaign_main_page_text(self):
         self.wait_displayed(CampaignLocators.NO_ACTIVE_CAMPAIGNS_LABEL)
-        txt = self.find(CampaignLocators.NO_ACTIVE_CAMPAIGNS_LABEL).text
-        return txt == 'Нет активных кампаний'
+        return self.find(CampaignLocators.NO_ACTIVE_CAMPAIGNS_LABEL).text
 
     def wait_media_generation(self):
         self.wait_displayed(CampaignLocators.VIDEO_CONTAINER)
