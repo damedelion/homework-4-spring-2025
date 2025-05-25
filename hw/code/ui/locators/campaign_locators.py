@@ -34,7 +34,7 @@ class CampaignLocators:
 
     AD_MEDIA_BTN = (
         By.XPATH,
-        "//div[contains(@class, 'MediaFileAutogenSelector_section') and .//h5[contains(text(), 'Медиатека')]]",
+        "//span[contains(@class, 'MediaFileAutogenSelector_sectionText') and text()='Медиатека']",
     )
     AD_MEDIA_SITES_BTN = (
         By.XPATH,
