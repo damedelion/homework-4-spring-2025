@@ -86,12 +86,6 @@ def commerce_page(driver):
 def cleanup_campaign(campaign_page):
     yield
     campaign_page.choose_option('Удалить')
-    assert campaign_page.check_no_campaigns()
-
-@pytest.fixture
-def cleanup_campaign(campaign_page):
-    yield
-    campaign_page.choose_option('Удалить')
 
 @pytest.fixture
 def prepare_campaign(campaign_page):
