@@ -4,6 +4,7 @@ from _pytest.fixtures import FixtureRequest
 from selenium.webdriver.support import expected_conditions as EC
 from ui.locators.leadforms_locators import LeadformsLocators
 import os
+import pytest
 
 class TestLeadforms(BaseCase):
     def open_page(self, request: FixtureRequest):
@@ -136,6 +137,16 @@ class TestLeadforms(BaseCase):
         page.find(LeadformsLocators.CONTINUE_BUTTON).click()
         page.wait()
         assert "Результат" in page.find(LeadformsLocators.ACTIVE_STEP).text
+
+    @pytest.mark.skip(reason="bug")
+    def test_result_stage_empty(self, request: FixtureRequest):
+        page = self.open_page(request)
+        page.go_to_result_stage(request)
+        page.find(LeadformsLocators.HEADER_RESULT_INPUT).clear()
+        page.find(LeadformsLocators.HEADER_RESULT_INPUT).send_keys("a")
+        page.find(LeadformsLocators.CONTINUE_BUTTON).click()
+        assert "Нужно заполнить" in page.driver.page_source
+        assert not "Настройки" in page.find(LeadformsLocators.ACTIVE_STEP).text
 
     def test_result_stage_invalid(self, request: FixtureRequest):
         page = self.open_page(request)
