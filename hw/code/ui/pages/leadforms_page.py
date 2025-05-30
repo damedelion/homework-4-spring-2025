@@ -23,11 +23,11 @@ class LeadformsPage(BasePage):
         self.find(LeadformsLocators.DECORATION_HEADER_INPUT).send_keys(header)
         self.find(LeadformsLocators.DECORATION_DESCRIPTION_INPUT).send_keys(description)
         self.find(LeadformsLocators.DECORATION_LOGO_UPLOAD).click()
-        time.sleep(1) # ждем загрузку медиатеки
-        self.wait().until(EC.presence_of_element_located(LeadformsLocators.MEDIA_UPLOAD_CLOSE))
+        self.wait().until(EC.presence_of_element_located(LeadformsLocators.IMAGE_UPLOAD_INPUT))
+        self.wait().until(EC.visibility_of_element_located(LeadformsLocators.BACKLEVEL_MODAL))
         if len(self.find_all(LeadformsLocators.UPLOADED_IMAGE)) == 0:
             self.find(LeadformsLocators.IMAGE_UPLOAD_INPUT).send_keys(os.path.join(request.config.rootpath, 'images', 'test_image.jpg'))
-            self.wait().until(EC.invisibility_of_element(LeadformsLocators.LOADING_ICON))
+            self.wait_until_invisible(LeadformsLocators.ZOOM_IMAGE)
             self.wait().until(EC.presence_of_element_located(LeadformsLocators.CROPPER_BOX))
             self.find(LeadformsLocators.SAVE_UPLOAD).click()
             
@@ -40,19 +40,19 @@ class LeadformsPage(BasePage):
         self.wait().until(EC.invisibility_of_element(LeadformsLocators.MEDIA_UPLOAD_CLOSE))
         self.wait().until(EC.presence_of_element_located(LeadformsLocators.LOADED_LOGO))
 
-    def go_to_questions_stage(self, request: FixtureRequest):
+    def go_to_questions_stage(self, request: FixtureRequest, form_title = "", company = "Test Company", header = "Test Header", description = "Test Description"):
         self.go_to_decoration_stage()
-        self.fill_decoration_required_fields(request)
+        self.fill_decoration_required_fields(request, form_title, company, header, description)
         self.wait().until(EC.element_to_be_clickable(LeadformsLocators.CONTINUE_BUTTON)).click()
         self.wait()
         
-    def go_to_result_stage(self, request: FixtureRequest):
-        self.go_to_questions_stage(request)
+    def go_to_result_stage(self, request: FixtureRequest, form_title = "", company = "Test Company", header = "Test Header", description = "Test Description"):
+        self.go_to_questions_stage(request, form_title, company, header, description)
         self.wait().until(EC.element_to_be_clickable(LeadformsLocators.CONTINUE_BUTTON)).click()
         self.wait()
 
-    def go_to_settings_stage(self, request: FixtureRequest):
-        self.go_to_result_stage(request)
+    def go_to_settings_stage(self, request: FixtureRequest, form_title = "", company = "Test Company", header = "Test Header", description = "Test Description"):
+        self.go_to_result_stage(request, form_title, company, header, description)
         self.wait().until(EC.element_to_be_clickable(LeadformsLocators.CONTINUE_BUTTON)).click()
         self.wait()
 

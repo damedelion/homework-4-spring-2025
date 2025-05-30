@@ -9,7 +9,7 @@ class TestAudiences(BaseCase):
     def setup_teardown_audience(self, request, audiences_page):
         """Фикстура для создания/удаления аудитории только для тестов с маркером needs_audience"""
         audiences_page.open()
-        
+
         if 'needs_audience' in request.keywords:
             self.audience_name = f"Test Audience {int(time.time())}"
             audiences_page.create_audience(self.audience_name)
@@ -22,7 +22,7 @@ class TestAudiences(BaseCase):
 
     def test_empty_state_ui_elements(self, audiences_page):
         audiences_page.open()
-        
+
         assert audiences_page.is_empty_state_ui_correct()
 
     def test_create_audience_button_click(self, audiences_page):
@@ -204,5 +204,5 @@ class TestAudiences(BaseCase):
         audiences_page.share_audience()
         is_share_link_present = audiences_page.is_share_link_present()
         audiences_page.close_share_link_window()
-        
+
         assert is_share_link_present

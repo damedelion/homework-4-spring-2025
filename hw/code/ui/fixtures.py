@@ -82,3 +82,33 @@ def audiences_page(driver):
 def commerce_page(driver): 
     return CommercePage(driver=driver)
 
+@pytest.fixture
+def cleanup_campaign(campaign_page):
+    yield
+    campaign_page.choose_option('Удалить')
+
+@pytest.fixture
+def prepare_campaign(campaign_page):
+    url = "https://github.com/damedelion/homework-4-spring-2025"
+    budget = "123"
+    title = "Test title"
+    desc = "Test description"
+    new_name = "Test campaign"
+
+    campaign_page.click_create_btn()
+    campaign_page.change_name(new_name)
+    campaign_page.click_site_field()
+    campaign_page.fill_site_url_field(url)
+    campaign_page.click_budget_field()
+    campaign_page.fill_budget_field(budget)
+    campaign_page.choose_date()
+
+    campaign_page.click_continue_btn()
+    campaign_page.choose_region()
+    campaign_page.click_continue_btn()
+
+    campaign_page.fill_ad_title(title)
+    campaign_page.fill_ad_short_desc(desc)
+    campaign_page.choose_default_media()
+    campaign_page.wait_media_generation()
+    campaign_page.click_submit_btn()
