@@ -6,16 +6,16 @@ class CampaignLocators:
     SITE_FIELD = (By.XPATH, '//div[@data-id="site_conversions"]')
     SITE_URL_FIELD = (By.XPATH, '//input[@placeholder="Вставьте ссылку или выберите из списка"]')
 
+    END_DATE_FIELD = (By.XPATH, '//span[@data-testid="end-date"]')
+    FIRST_AVAILABLE_DATE = (By.XPATH, '(//div[contains(@class, "vkuiCalendarDay") and @aria-disabled="false"])[1]')
+
     CHANGE_NAME_BTN = (By.XPATH, "//div[contains(@class, 'EditableTitle_container__')]")
     CHANGE_NAME_FIELD = (By.XPATH, "//div[contains(@class, 'EditableTitle_container__')]//textarea")
     CHANGE_NAME_ACCEPT = (By.XPATH, "//*[contains(@class, 'EditableTitle_doneIcon__')]")
 
     CONTINUE_BTN = (By.XPATH, "//*[contains(@class, 'vkuiButton__content') and text() = 'Продолжить']")
     SUBMIT_BTN = (By.XPATH, "//*[contains(@class, 'vkuiButton__content') and text() = 'Опубликовать']")
-    CANCEL_BTN = (
-        By.XPATH,
-        "//button[@class='vkuiButton vkuiButton--size-l vkuiButton--mode-secondary vkuiButton--appearance-accent vkuiButton--align-center vkuiButton--stretched vkuiTappable vkuiInternalTappable vkuiTappable--sizeX-none vkuiTappable--hasHover vkuiTappable--hasActive vkui-focus-visible']"
-    )
+    CANCEL_BTN = (By.XPATH, "//button[contains(@class, 'vkuiButton') and contains(@class, 'vkuiButton--appearance-accent')]")
 
     ERROR_MESSAGE = (By.XPATH, "//span[contains(@class, 'vkuiFormItem__bottom')]//div")
     SITE_BUDGET = (By.XPATH, "//span[text()='Бюджет']")
@@ -34,7 +34,7 @@ class CampaignLocators:
 
     AD_MEDIA_BTN = (
         By.XPATH,
-        "//div[contains(@class, 'MediaFileAutogenSelector_section') and .//h5[contains(text(), 'Медиатека')]]",
+        "//span[contains(@class, 'MediaFileAutogenSelector_sectionText') and text()='Медиатека']",
     )
     AD_MEDIA_SITES_BTN = (
         By.XPATH,
@@ -53,6 +53,8 @@ class CampaignLocators:
         By.XPATH,
         "//h2[contains(@class, 'vkuiTitle--level-2')]//span",
     )
+
+    VIDEO_CONTAINER = (By.XPATH, "//*[contains(@class, 'VideoContainer_container__')]")
 
     @staticmethod
     def CAMPAIGNS_TABLE_CHOOSE_OPTIONS(option):

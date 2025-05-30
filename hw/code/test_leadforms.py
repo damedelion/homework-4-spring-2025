@@ -69,7 +69,7 @@ class TestLeadforms(BaseCase):
         page.find(LeadformsLocators.CONTINUE_BUTTON).click()
         assert "Нужно заполнить" in page.driver.page_source
         assert not "Вопросы" in page.find(LeadformsLocators.ACTIVE_STEP).text
-    
+
     def test_decoration_required_fields_valid(self, request: FixtureRequest):
         page = self.open_page(request)
         page.go_to_decoration_stage()
@@ -93,7 +93,7 @@ class TestLeadforms(BaseCase):
         page.wait(10).until(EC.element_to_be_clickable(LeadformsLocators.SAVE_UPLOAD)).click()
         assert test_company in page.find(LeadformsLocators.PREVIEW_COMPANY_TITLE).text
         assert test_header in page.find(LeadformsLocators.PREVIEW_HEADER).text
-        assert test_description in page.find(LeadformsLocators.PREVIEW_DESCRIPTION).text 
+        assert test_description in page.find(LeadformsLocators.PREVIEW_DESCRIPTION).text
 
     def test_questions_stage_default(self, request: FixtureRequest):
         page = self.open_page(request)
@@ -119,7 +119,7 @@ class TestLeadforms(BaseCase):
         page.find(LeadformsLocators.CONTINUE_BUTTON).click()
         assert len(page.find_all(LeadformsLocators.INVALID_QUESTION)) > 0
         assert not "Результат" in page.find(LeadformsLocators.ACTIVE_STEP).text
-    
+
     def test_question_preview_updates_and_pass(self, request: FixtureRequest):
         page = self.open_page(request)
         page.go_to_questions_stage(request)
