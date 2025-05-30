@@ -1,7 +1,7 @@
 from ui.pages.base_url import VKADS_BASE_URL
-
 from ui.pages.base_page import BasePage
 from ui.locators.commerce_locators import CommerceLocators
+from ui.locators.basic_locators import BasePageLocators
 
 
 class CommercePage(BasePage):
@@ -10,20 +10,20 @@ class CommercePage(BasePage):
     def click_create_catalog_button(self):
         self.click(CommerceLocators.CREATE_CATALOG_BUTTON)
     
-    def create_catalog_header_exists(self):
+    def find_create_catalog_header(self):
         return self.find(CommerceLocators.NEW_CATALOG_HEADER)
     
     def click_start_onboarding_button(self):
         self.click(CommerceLocators.START_ONBOARDING_BUTTON)
     
-    def select_onboarding_modal_exists(self):
+    def find_select_onboarding_modal(self):
         return self.find(CommerceLocators.SELECT_ONBOARDING_MODAL)
 
     def find_catalog_name_input(self):
         return self.find(CommerceLocators.CATALOG_NAME_INPUT)
     
     def submit_create_catalog_button(self):
-        self.click(CommerceLocators.SUBMIT_CREATE_CATALOG_BUTTON)
+        self.click(BasePageLocators.testid('submit'))
     
     def find_required_field_error(self):
         return self.find(CommerceLocators.REQUIRED_FIELD_ERROR)
@@ -46,6 +46,9 @@ class CommercePage(BasePage):
     def find_catalog_from_url_select(self):
         return self.find(CommerceLocators.CATALOG_FROM_URL_SELECT)
     
+    def wait_until_utm_checkbox_disappeared(self):
+        self.wait_until_invisible(CommerceLocators.CATALOG_REMOVE_UTM_TAGS)
+    
     def select_catalog_from_marketplace(self):
         self.click(CommerceLocators.CATALOG_FROM_MARKETPLACE_SELECT)
 
@@ -66,6 +69,9 @@ class CommercePage(BasePage):
     
     def close_create_catalog_modal(self):
         self.click(CommerceLocators.CLOSE_CREATE_CATALOG_MODAL_BUTTON)
+    
+    def wait_closing_create_catalog_modal(self):
+        self.wait_to_disappear(CommerceLocators.NEW_CATALOG_HEADER)
     
     def cancel_create_catalog_modal(self):
         self.click(CommerceLocators.CANCEL_CREATE_CATALOG_MODAL_BUTTON)
@@ -98,13 +104,16 @@ class CommercePage(BasePage):
         return self.find(CommerceLocators.CATALOG_SETTINGS_HEADER)
     
     def submit_catalog_settings(self):
-        self.click(CommerceLocators.CATALOG_SETTINGS_SUBMIT_BUTTON)
+        self.click(BasePageLocators.testid('submit'))
     
     def delete_catalog_from_settings(self):
-        self.click(CommerceLocators.CATALOG_SETTINGS_DELETE_BUTTON)
+        self.click(BasePageLocators.testid('delete'))
     
     def cancel_catalog_settings(self):
-        self.click(CommerceLocators.CANCEL_CATALOG_SETTINGS_BUTTON)
+        self.click(BasePageLocators.testid('cancel'))
+    
+    def wait_closing_catalog_settings(self):
+        self.wait_to_disappear(CommerceLocators.CATALOG_SETTINGS_HEADER)
     
     def fill_settings_catalog_name(self, name):
         name_input = self.find(CommerceLocators.CATALOG_SETTINGS_NAME_INPUT)
@@ -116,17 +125,14 @@ class CommercePage(BasePage):
     
     def wait_catalog_name(self, name):
         self.wait().until(
-            lambda d: name == self.find(CommerceLocators.CATALOG_NAME).text
+            lambda _: name == self.find(CommerceLocators.CATALOG_NAME).text
         )
         return True
     
     def close_catalog_settings(self):
         self.click(CommerceLocators.CLOSE_CATALOG_SETTINGS_BUTTON)
     
-    def cancel_catalog_settings(self):
-        self.click(CommerceLocators.CANCEL_CATALOG_SETTINGS_BUTTON)
-    
-    def open_catalog_settings(self):
+    def open_catalog_table_settings(self):
         self.click(CommerceLocators.TABLE_SETTINGS_BUTTON)
     
     def find_table_settings_header(self):

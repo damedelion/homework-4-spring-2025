@@ -6,3 +6,7 @@ class BasePageLocators:
     GO_BUTTON_LOCATOR = (By.XPATH, '//*[@id="submit"]')
     START_SHELL = (By.ID, 'start-shell')
     PYTHON_CONSOLE = (By.ID, 'hterm:row-nodes')
+    
+    @staticmethod
+    def testid(id):
+        return (By.XPATH, f'//*[@data-testid="{id}"]')
