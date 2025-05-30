@@ -8,7 +8,6 @@ class CommerceLocators:
     CREATE_CATALOG_BUTTON = (By.XPATH, '//button[@data-testid="create-catalog"]')
     NEW_CATALOG_HEADER = (By.XPATH, '//h2[contains(@class, "ModalSidebarPage_title") and text()="Новый каталог"]')
     CATALOG_NAME_INPUT = (By.XPATH, '//input[@data-testid="catalogName-input"]')
-    SUBMIT_CREATE_CATALOG_BUTTON = (By.XPATH, '//button[@data-testid="submit" and @title="Создать каталог"]')
     CLOSE_CREATE_CATALOG_MODAL_BUTTON = (By.XPATH, '//button[@aria-label="Close"]')
     CANCEL_CREATE_CATALOG_MODAL_BUTTON = (By.XPATH, '//button[@data-testid="cancel"]')
     
@@ -21,6 +20,7 @@ class CommerceLocators:
     CATALOG_FROM_URL_SELECT = (By.XPATH, '//div[@data-testid="catalog-source_type-select" and @data-entityid="url"]')
     CATALOG_URL_INPUT = (By.XPATH, '//input[@data-testid="catalogUrl-input" and @placeholder="Введите ссылку на фид или сообщество с товарами ВКонтакте"]')
     CATALOG_URL_AUTH_BUTTON = (By.XPATH, '//div[contains(@class, "BasicAuthField_authButtonContent")]')
+    CATALOG_REMOVE_UTM_TAGS = (By.XPATH, '//span[text()="Автоматически удалять UTM-метки"]')
 
     CATALOG_FROM_MARKETPLACE_SELECT = (By.XPATH, '//div[@data-testid="catalog-source_type-select" and @data-entityid="marketplace"]')
     CATALOG_MARKETPLACE_INPUT = (By.XPATH, '//input[@data-testid="catalogUrl-input" and @placeholder="Введите ссылку на страницу магазина на маркетплейсе"]')
@@ -39,9 +39,6 @@ class CommerceLocators:
     CATALOG_SETTINGS_BUTTON = (By.XPATH, '//button[contains(@class, "Nav_buttonSettings") and .//span[text()="Настройки"]]')
     CATALOG_SETTINGS_HEADER = (By.XPATH, '//h2[contains(@class, "ModalSidebarPage_title") and text()="Настройки каталога"]')
     CLOSE_CATALOG_SETTINGS_BUTTON = (By.XPATH, '//button[@aria-label="Close"]')
-    CANCEL_CATALOG_SETTINGS_BUTTON = (By.XPATH, '//button[@data-testid="cancel"]')
-    CATALOG_SETTINGS_SUBMIT_BUTTON = (By.XPATH, '//button[@data-testid="submit"]')
-    CATALOG_SETTINGS_DELETE_BUTTON = (By.XPATH, '//button[@data-testid="delete"]')
     CATALOG_SETTINGS_NAME_INPUT = (By.XPATH, '//input[@data-testid="catalogName-input"]')
 
     TABLE_SETTINGS_BUTTON = (By.XPATH, '//button[contains(@class, "TableSettings_settingsButton")]')
