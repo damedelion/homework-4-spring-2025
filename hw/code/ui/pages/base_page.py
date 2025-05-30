@@ -1,11 +1,8 @@
 import time
 
 from selenium.webdriver.remote.webelement import WebElement
-from ui.locators import basic_locators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-from ui.locators.basic_locators import BasePageLocators
 
 from ui.pages.base_url import VKADS_BASE_URL
 
@@ -60,9 +57,6 @@ class BasePage(object):
         go_button = self.find(BasePageLocators.GO_BUTTON_LOCATOR)
         go_button.click()
         self.my_assert()
-
-    def my_assert(self):
-        assert 1 == 1
 
     def click(self, locator, timeout=None) -> WebElement:
         elem = self.find(locator, timeout=timeout)
