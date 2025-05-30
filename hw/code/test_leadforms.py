@@ -4,6 +4,7 @@ from _pytest.fixtures import FixtureRequest
 from selenium.webdriver.support import expected_conditions as EC
 from ui.locators.leadforms_locators import LeadformsLocators
 import os
+import pytest
 
 class TestLeadforms(BaseCase):
     def open_page(self, request: FixtureRequest):
@@ -137,17 +138,15 @@ class TestLeadforms(BaseCase):
         page.wait()
         assert "Результат" in page.find(LeadformsLocators.ACTIVE_STEP).text
 
-    # BUG!
-    """ def test_result_stage_empty(self, request: FixtureRequest):
+    @pytest.mark.skip(reason="bug")
+    def test_result_stage_empty(self, request: FixtureRequest):
         page = self.open_page(request)
         page.go_to_result_stage(request)
         page.find(LeadformsLocators.HEADER_RESULT_INPUT).clear()
         page.find(LeadformsLocators.HEADER_RESULT_INPUT).send_keys("a")
-        time.sleep(5)
         page.find(LeadformsLocators.CONTINUE_BUTTON).click()
-        time.sleep(5)
         assert "Нужно заполнить" in page.driver.page_source
-        assert not "Настройки" in page.find(LeadformsLocators.ACTIVE_STEP).text """
+        assert not "Настройки" in page.find(LeadformsLocators.ACTIVE_STEP).text
 
     def test_result_stage_invalid(self, request: FixtureRequest):
         page = self.open_page(request)
@@ -174,14 +173,7 @@ class TestLeadforms(BaseCase):
     def test_settings_stage_valid_and_leadform_creation(self, request: FixtureRequest):
         page = self.open_page(request)
         form_title = "New Form"
-        page.go_to_decoration_stage()
-        page.fill_decoration_required_fields(request, form_title)
-        page.wait().until(EC.element_to_be_clickable(LeadformsLocators.CONTINUE_BUTTON)).click() # go_to_questions_stage
-        page.wait()
-        page.wait().until(EC.element_to_be_clickable(LeadformsLocators.CONTINUE_BUTTON)).click() # go_to_result_stage
-        page.wait()
-        page.wait().until(EC.element_to_be_clickable(LeadformsLocators.CONTINUE_BUTTON)).click() # go_to_settings_stage
-        page.wait()
+        page.go_settings_stage(request, form_title)
         test_name = "Test Name"
         test_address = "Test Address"
         page.find(LeadformsLocators.SETTINGS_NAME_INPUT).send_keys(test_name)
